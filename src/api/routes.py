@@ -20,3 +20,22 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+
+@api.route("/user", methods=["POST"])
+def register_user():
+    data = request.json
+
+    user = User(email=data["email"], name=data["name"], password=data["password"], salt=1)
+    db.session.add(user)
+
+    try:
+        db.session.commit()
+        return jsonify("guardadio"), 201
+    except Exception as error:
+        print(error)
+        return jsonify({"message":f"error {error}"})
+
+
+
+
